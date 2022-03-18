@@ -7,6 +7,8 @@ INITIALIZE_EASYLOGGINGPP // NOLINT
 
 int main(int argc, char **argv)
 {
+    el::Loggers::reconfigureAllLoggers(el::ConfigurationType::Format, "%datetime [%level]: %msg");
+
     cxxopts::Options options("Latte", "Coffee machine system on TB-RK3399ProD.");
     options.allow_unrecognised_options();
     options.add_options()
