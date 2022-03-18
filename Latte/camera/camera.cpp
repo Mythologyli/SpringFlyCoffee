@@ -1,4 +1,4 @@
-#include "../easyloggingpp/easylogging++.h"
+#include "../easylogging++/easylogging++.h"
 
 #include "camera.h"
 

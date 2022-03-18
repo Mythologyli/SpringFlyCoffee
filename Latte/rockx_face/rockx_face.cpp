@@ -1,6 +1,6 @@
 #include <ctime>
 
-#include "../easyloggingpp/easylogging++.h"
+#include "../easylogging++/easylogging++.h"
 
 #include "rockx_face.h"
 
