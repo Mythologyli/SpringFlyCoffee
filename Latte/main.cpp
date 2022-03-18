@@ -80,6 +80,8 @@ int main(int argc, char **argv)
         return 0;
     }
 
+    rockx_image_release(&output_image);
+
     if (cxxopts_result.count("save"))
     {
         int fd = open("origin.feature", O_WRONLY | O_CREAT);
@@ -97,6 +99,7 @@ int main(int argc, char **argv)
 
         int fd = open("origin.feature", O_RDONLY);
         read(fd, &origin_feature, sizeof(rockx_face_feature_t));
+        close(fd);
 
         float similarity;
         rockx_face_feature_similarity(&feature, &origin_feature, &similarity);
