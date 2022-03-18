@@ -10,8 +10,10 @@ Camera::Camera(const char *device_path)
         LOG(ERROR) << "Cannot open camera. Remember to run this program as root user.";
         is_opened = false;
     }
-
-    is_opened = true;
+    else
+    {
+        is_opened = true;
+    }
 }
 
 bool Camera::get_frame(cv::Mat &frame)
