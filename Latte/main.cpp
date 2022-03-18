@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 
 #include <opencv2/opencv.hpp>
 #include <rockx.h>
@@ -36,12 +37,20 @@ int main()
     input_image.height = frame.rows;
     input_image.data = frame.data;
 
+    clock_t start_time, end_time;
+    start_time = clock();
+
     ret = rockx_face_detect(face_det_handle, &input_image, &face_array, nullptr);
+
+    end_time = clock();
+
     if (ret != ROCKX_RET_SUCCESS)
     {
         std::cout << "Fail to detect face. Error: " << ret << std::endl;
         return -1;
     }
+
+    std::cout << "Detection time: " << (double) (end_time - start_time) / CLOCKS_PER_SEC << "s" << std::endl;
 
     for (int i = 0; i < face_array.count; i++)
     {
