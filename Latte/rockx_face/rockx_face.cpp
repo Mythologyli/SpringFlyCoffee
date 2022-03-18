@@ -8,6 +8,8 @@ RockxFace::RockxFace()
 {
     rockx_ret_t ret;
 
+    similarity_threshold = 1.0;
+
     face_detection_handle = nullptr;
     ret = rockx_create(&face_detection_handle, ROCKX_MODULE_FACE_DETECTION, nullptr, 0);
     if (ret != ROCKX_RET_SUCCESS)
@@ -94,6 +96,32 @@ bool RockxFace::recognize(rockx_image_t &input_image, rockx_face_feature_t &feat
     }
 
     return true;
+}
+
+float RockxFace::get_similarity_threshold() const
+{
+    return similarity_threshold;
+}
+
+void RockxFace::set_similarity_threshold(float threshold)
+{
+    similarity_threshold = threshold;
+}
+
+bool RockxFace::is_feature_same(rockx_face_feature_t &feature1, rockx_face_feature_t &feature2) const
+{
+    float similarity;
+    rockx_face_feature_similarity(&feature1, &feature2, &similarity);
+    LOG(INFO) << "Similarity (more smaller more similar): " << similarity;
+
+    if (similarity <= similarity_threshold)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 RockxFace::~RockxFace()

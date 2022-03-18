@@ -32,6 +32,7 @@ int main(int argc, char **argv)
 
     Camera camera((const char *) cxxopts_result["camera"].as<std::string>().c_str());
     RockxFace rockx_face;
+    rockx_face.set_similarity_threshold(0.5);
 
     cv::Mat frame;
     if (!camera.get_frame(frame))
@@ -89,8 +90,6 @@ int main(int argc, char **argv)
         close(fd);
 
         LOG(INFO) << "Save feature to origin.feature.";
-
-        return 0;
     }
     else
     {
@@ -101,9 +100,14 @@ int main(int argc, char **argv)
         read(fd, &origin_feature, sizeof(rockx_face_feature_t));
         close(fd);
 
-        float similarity;
-        rockx_face_feature_similarity(&feature, &origin_feature, &similarity);
-        LOG(INFO) << "Similarity (more smaller more similar): " << similarity;
+        if (rockx_face.is_feature_same(feature, origin_feature))
+        {
+            LOG(INFO) << "Feature is same as origin feature.";
+        }
+        else
+        {
+            LOG(INFO) << "Feature is not same as origin feature.";
+        }
     }
 
     return 0;
