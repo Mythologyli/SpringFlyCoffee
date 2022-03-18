@@ -9,6 +9,8 @@ class RockxFace
 public:
     explicit RockxFace();
 
+    ~RockxFace();
+
     bool detect(cv::Mat &frame, rockx_object_array_t &face_array);
 
 private:

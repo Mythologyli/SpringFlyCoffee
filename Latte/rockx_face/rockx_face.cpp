@@ -43,3 +43,8 @@ bool RockxFace::detect(cv::Mat &frame, rockx_object_array_t &face_array)
 
     return true;
 }
+
+RockxFace::~RockxFace()
+{
+    rockx_destroy(face_det_handle);
+}

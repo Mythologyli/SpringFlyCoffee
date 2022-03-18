@@ -8,6 +8,8 @@ class Camera
 public:
     explicit Camera(const char *device_path);
 
+    ~Camera();
+
     bool get_frame(cv::Mat &frame);
 
 private:

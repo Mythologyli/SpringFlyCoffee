@@ -26,3 +26,8 @@ bool Camera::get_frame(cv::Mat &frame)
         return false;
     }
 }
+
+Camera::~Camera()
+{
+    video_capture.release();
+}
