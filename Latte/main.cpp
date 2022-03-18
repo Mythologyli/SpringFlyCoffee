@@ -5,6 +5,7 @@
 
 #include "cxxopts/cxxopts.hpp"
 #include "easylogging++/easylogging++.h"
+#include "serial/serial.h"
 #include "camera/camera.h"
 #include "rockx_face/rockx_face.h"
 
