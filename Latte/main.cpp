@@ -101,13 +101,13 @@ int main(int argc, char **argv)
         read(fd, &origin_feature, sizeof(rockx_face_feature_t));
         close(fd);
 
-        if (rockx_face.is_feature_same(feature, origin_feature))
+        if (rockx_face.is_face_same(feature, origin_feature))
         {
-            LOG(INFO) << "Feature is same as origin feature.";
+            LOG(INFO) << "Face is same as origin face.";
         }
         else
         {
-            LOG(INFO) << "Feature is not same as origin feature.";
+            LOG(INFO) << "Face is not same as origin face.";
         }
     }
 

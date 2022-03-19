@@ -16,7 +16,7 @@ public:
 
     bool recognize(rockx_image_t &input_image, rockx_face_feature_t &feature);
 
-    bool is_feature_same(rockx_face_feature_t &feature1, rockx_face_feature_t &feature2) const;
+    bool is_face_same(rockx_face_feature_t &feature1, rockx_face_feature_t &feature2) const;
 
     float get_similarity_threshold() const;
 

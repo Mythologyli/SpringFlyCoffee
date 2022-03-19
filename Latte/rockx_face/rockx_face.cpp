@@ -108,7 +108,7 @@ void RockxFace::set_similarity_threshold(float threshold)
     similarity_threshold = threshold;
 }
 
-bool RockxFace::is_feature_same(rockx_face_feature_t &feature1, rockx_face_feature_t &feature2) const
+bool RockxFace::is_face_same(rockx_face_feature_t &feature1, rockx_face_feature_t &feature2) const
 {
     float similarity;
     rockx_face_feature_similarity(&feature1, &feature2, &similarity);
