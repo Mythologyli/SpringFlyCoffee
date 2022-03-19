@@ -13,6 +13,7 @@ find_package(Qt5 COMPONENTS
         REQUIRED)
 
 add_executable(Mocca main.cpp)
+
 target_link_libraries(Mocca
         Qt5::Core
         Qt5::Gui
