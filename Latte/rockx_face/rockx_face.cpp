@@ -114,14 +114,7 @@ bool RockxFace::is_feature_same(rockx_face_feature_t &feature1, rockx_face_featu
     rockx_face_feature_similarity(&feature1, &feature2, &similarity);
     LOG(INFO) << "Similarity (more smaller more similar): " << similarity;
 
-    if (similarity <= similarity_threshold)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return similarity <= similarity_threshold;
 }
 
 RockxFace::~RockxFace()
