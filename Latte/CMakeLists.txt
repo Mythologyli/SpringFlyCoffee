@@ -25,7 +25,6 @@ include_directories(${RockX_INCLUDE_DIRS})
 
 set(SOURCES
         main.cpp
-        easylogging++/easylogging++.cc
         camera/camera.cpp
         rockx_face/rockx_face.cpp
         )

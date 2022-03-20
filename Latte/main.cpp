@@ -1,4 +1,3 @@
-#include <iostream>
 #include <cstring>
 #include <unistd.h>
 #include <fcntl.h>
@@ -6,15 +5,22 @@
 #include <QObject>
 #include <QtCore>
 
-#include "easylogging++/easylogging++.h"
 #include "serial/serial.h"
 #include "camera/camera.h"
 #include "rockx_face/rockx_face.h"
 
-INITIALIZE_EASYLOGGINGPP // NOLINT
-
 int main(int argc, char **argv)
 {
+    QString message_pattern = "%{time yyyyMMdd h:mm:ss.zzz} ";
+    message_pattern += "%{if-debug}[Debug] %{file}:%{line}%{endif}";
+    message_pattern += "%{if-info}[Info]%{endif}";
+    message_pattern += "%{if-warning}[Warning] %{file}:%{line}%{endif}";
+    message_pattern += "%{if-critical}[Critical] %{file}:%{line}%{endif}";
+    message_pattern += "%{if-fatal}[Fatal] %{file}:%{line}%{endif}";
+    message_pattern += " %{message}";
+
+    qSetMessagePattern(message_pattern);
+
     QCoreApplication app(argc, argv);
     QCoreApplication::setApplicationName("Latte");
     QCoreApplication::setApplicationVersion("0.1");
@@ -38,9 +44,6 @@ int main(int argc, char **argv)
     );
 
     parser.process(app);
-
-    el::Loggers::reconfigureAllLoggers(el::ConfigurationType::Format,
-                                       "%datetime [%level]: %msg");
 
     QString camera_device_path = parser.value("camera");
     Camera camera(camera_device_path.isEmpty() ? "/dev/v4l/by-id/usb-Generic_HD_camera-video-index0"
@@ -70,13 +73,13 @@ int main(int argc, char **argv)
 
     if (face_array.count == 0)
     {
-        LOG(INFO) << "No faces detected.";
+        qInfo() << "No faces detected.";
         return 0;
     }
 
     for (int i = 0; i < face_array.count; i++)
     {
-        LOG(INFO) << "Score: " << face_array.object[i].score;
+        qInfo() << "Score:" << face_array.object[i].score;
     }
 
     rockx_image_t output_image;
@@ -103,7 +106,7 @@ int main(int argc, char **argv)
         write(fd, &feature, sizeof(rockx_face_feature_t));
         close(fd);
 
-        LOG(INFO) << "Save feature to origin.feature.";
+        qInfo() << "Save feature to origin.feature.";
     }
     else
     {
@@ -116,11 +119,11 @@ int main(int argc, char **argv)
 
         if (rockx_face.is_face_same(feature, origin_feature))
         {
-            LOG(INFO) << "Face is same as origin face.";
+            qInfo() << "Face is same as origin face.";
         }
         else
         {
-            LOG(INFO) << "Face is not same as origin face.";
+            qInfo() << "Face is not same as origin face.";
         }
     }
 

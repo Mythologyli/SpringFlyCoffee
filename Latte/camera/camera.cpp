@@ -1,4 +1,4 @@
-#include "../easylogging++/easylogging++.h"
+#include <QtCore>
 
 #include "camera.h"
 
@@ -7,7 +7,7 @@ Camera::Camera(const char *device_path)
     video_capture = cv::VideoCapture(device_path);
     if (!video_capture.isOpened())
     {
-        LOG(ERROR) << "Cannot open camera. Remember to run this program as root user.";
+        qWarning() << "Cannot open camera. Remember to run this program as root user.";
         is_opened = false;
     }
     else
@@ -24,7 +24,7 @@ bool Camera::get_frame(cv::Mat &frame)
     }
     else
     {
-        LOG(ERROR) << "Camera not opened.";
+        qWarning() << "Camera not opened.";
         return false;
     }
 }

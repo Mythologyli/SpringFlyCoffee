@@ -1,6 +1,6 @@
 #include <ctime>
 
-#include "../easylogging++/easylogging++.h"
+#include <QtCore>
 
 #include "rockx_face.h"
 
@@ -14,21 +14,21 @@ RockxFace::RockxFace()
     ret = rockx_create(&face_detection_handle, ROCKX_MODULE_FACE_DETECTION, nullptr, 0);
     if (ret != ROCKX_RET_SUCCESS)
     {
-        LOG(ERROR) << "Fail to create face_detection_handle. Error: " << ret;
+        qWarning() << "Fail to create face_detection_handle. Error:" << ret;
     }
 
     face_landmark_handle = nullptr;
     ret = rockx_create(&face_landmark_handle, ROCKX_MODULE_FACE_LANDMARK_5, nullptr, 0);
     if (ret != ROCKX_RET_SUCCESS)
     {
-        LOG(ERROR) << "Fail to create face_landmark_handle. Error: " << ret;
+        qWarning() << "Fail to create face_landmark_handle. Error:" << ret;
     }
 
     face_recognize_handle = nullptr;
     ret = rockx_create(&face_recognize_handle, ROCKX_MODULE_FACE_RECOGNIZE, nullptr, 0);
     if (ret != ROCKX_RET_SUCCESS)
     {
-        LOG(ERROR) << "Fail to create face_recognize_handle. Error: " << ret;
+        qWarning() << "Fail to create face_recognize_handle. Error:" << ret;
     }
 }
 
@@ -43,11 +43,11 @@ bool RockxFace::detect(rockx_image_t &input_image, rockx_object_array_t &face_ar
 
     end_time = clock();
 
-    LOG(INFO) << "Detect time: " << (double) (end_time - start_time) / CLOCKS_PER_SEC << "s";
+    qInfo() << "Detect time:" << (double) (end_time - start_time) / CLOCKS_PER_SEC << "s";
 
     if (ret != ROCKX_RET_SUCCESS)
     {
-        LOG(ERROR) << "Fail to detect face. Error: " << ret;
+        qWarning() << "Fail to detect face. Error:" << ret;
         return false;
     }
 
@@ -65,11 +65,11 @@ bool RockxFace::align(rockx_image_t &input_image, rockx_object_t &face, rockx_im
 
     end_time = clock();
 
-    LOG(INFO) << "Align time: " << (double) (end_time - start_time) / CLOCKS_PER_SEC << "s";
+    qInfo() << "Align time:" << (double) (end_time - start_time) / CLOCKS_PER_SEC << "s";
 
     if (ret != ROCKX_RET_SUCCESS)
     {
-        LOG(ERROR) << "Fail to align face. Error: " << ret;
+        qWarning() << "Fail to align face. Error:" << ret;
         return false;
     }
 
@@ -87,11 +87,11 @@ bool RockxFace::recognize(rockx_image_t &input_image, rockx_face_feature_t &feat
 
     end_time = clock();
 
-    LOG(INFO) << "Recognize time: " << (double) (end_time - start_time) / CLOCKS_PER_SEC << "s";
+    qInfo() << "Recognize time:" << (double) (end_time - start_time) / CLOCKS_PER_SEC << "s";
 
     if (ret != ROCKX_RET_SUCCESS)
     {
-        LOG(ERROR) << "Fail to recognize face. Error: " << ret;
+        qWarning() << "Fail to recognize face. Error:" << ret;
         return false;
     }
 
@@ -112,7 +112,7 @@ bool RockxFace::is_face_same(rockx_face_feature_t &feature1, rockx_face_feature_
 {
     float similarity;
     rockx_face_feature_similarity(&feature1, &feature2, &similarity);
-    LOG(INFO) << "Similarity (more smaller more similar): " << similarity;
+    qInfo() << "Similarity (more smaller more similar):" << similarity;
 
     return similarity <= similarity_threshold;
 }
