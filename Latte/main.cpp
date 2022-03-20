@@ -3,7 +3,9 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-#include "cxxopts/cxxopts.hpp"
+#include <QObject>
+#include <QtCore>
+
 #include "easylogging++/easylogging++.h"
 #include "serial/serial.h"
 #include "camera/camera.h"
@@ -13,25 +15,36 @@ INITIALIZE_EASYLOGGINGPP // NOLINT
 
 int main(int argc, char **argv)
 {
-    el::Loggers::reconfigureAllLoggers(el::ConfigurationType::Format, "%datetime [%level]: %msg");
+    QCoreApplication app(argc, argv);
+    QCoreApplication::setApplicationName("Latte");
+    QCoreApplication::setApplicationVersion("0.1");
 
-    cxxopts::Options cxxopts_options("Latte", "Coffee machine system on TB-RK3399ProD.");
-    cxxopts_options.allow_unrecognised_options();
-    cxxopts_options.add_options()
-            ("c,camera", "Camera device path",
-             cxxopts::value<std::string>()->default_value("/dev/v4l/by-id/usb-Generic_HD_camera-video-index0"))
-            ("s,save", "Save feature to origin.feature")
-            ("h,help", "Help");
+    QCommandLineParser parser;
+    parser.setApplicationDescription("Coffee machine system on TB-RK3399ProD.");
+    parser.addHelpOption();
+    parser.addVersionOption();
 
-    auto cxxopts_result = cxxopts_options.parse(argc, argv);
+    parser.addOptions({
+                              {
+                                      {"c", "camera"},
+                                      QCoreApplication::translate("main", "Camera device <path>."),
+                                      QCoreApplication::translate("main", "path")
+                              },
+                              {
+                                      {"s", "save"},
+                                      QCoreApplication::translate("main", "Save feature to origin.feature.")
+                              }
+                      }
+    );
 
-    if (cxxopts_result.count("help"))
-    {
-        std::cout << cxxopts_options.help() << std::endl;
-        return 0;
-    }
+    parser.process(app);
 
-    Camera camera((const char *) cxxopts_result["camera"].as<std::string>().c_str());
+    el::Loggers::reconfigureAllLoggers(el::ConfigurationType::Format,
+                                       "%datetime [%level]: %msg");
+
+    QString camera_device_path = parser.value("camera");
+    Camera camera(camera_device_path.isEmpty() ? "/dev/v4l/by-id/usb-Generic_HD_camera-video-index0"
+                                               : camera_device_path.toLocal8Bit());
     RockxFace rockx_face;
     rockx_face.set_similarity_threshold(0.5);
 
@@ -84,7 +97,7 @@ int main(int argc, char **argv)
 
     rockx_image_release(&output_image);
 
-    if (cxxopts_result.count("save"))
+    if (parser.isSet("save"))
     {
         int fd = open("origin.feature", O_WRONLY | O_CREAT);
         write(fd, &feature, sizeof(rockx_face_feature_t));
