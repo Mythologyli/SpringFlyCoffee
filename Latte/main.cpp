@@ -5,7 +5,6 @@
 #include <QObject>
 #include <QtCore>
 
-#include "serial/serial.h"
 #include "camera/camera.h"
 #include "rockx_face/rockx_face.h"
 

@@ -5,16 +5,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
-include_directories(serial/include)
-set(serial_SRCS serial/src/serial.cc serial/include/serial/serial.h serial/include/serial/v8stdint.h)
-if (UNIX)
-    list(APPEND serial_SRCS serial/src/impl/unix.cc)
-else ()
-    list(APPEND serial_SRCS serial/src/impl/win.cc)
-endif ()
-
-add_library(serial ${serial_SRCS})
-
 find_package(Qt5 COMPONENTS Core REQUIRED)
 
 find_package(OpenCV REQUIRED)
@@ -31,7 +21,6 @@ set(SOURCES
 
 add_executable(Latte ${SOURCES})
 
-target_link_libraries(Latte serial)
 target_link_libraries(Latte Qt5::Core)
 target_link_libraries(Latte ${OpenCV_LIBS})
 target_link_libraries(Latte ${RockX_LIBS})
