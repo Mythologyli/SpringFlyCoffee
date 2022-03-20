@@ -11,6 +11,10 @@
 
 int main(int argc, char **argv)
 {
+    QCoreApplication app(argc, argv);
+    QCoreApplication::setApplicationName("Latte");
+    QCoreApplication::setApplicationVersion("0.1");
+
     QString message_pattern = "%{time yyyyMMdd h:mm:ss.zzz} ";
     message_pattern += "%{if-debug}[Debug] %{file}:%{line}%{endif}";
     message_pattern += "%{if-info}[Info]%{endif}";
@@ -20,10 +24,6 @@ int main(int argc, char **argv)
     message_pattern += " %{message}";
 
     qSetMessagePattern(message_pattern);
-
-    QCoreApplication app(argc, argv);
-    QCoreApplication::setApplicationName("Latte");
-    QCoreApplication::setApplicationVersion("0.1");
 
     QCommandLineParser parser;
     parser.setApplicationDescription("Coffee machine system on TB-RK3399ProD.");
