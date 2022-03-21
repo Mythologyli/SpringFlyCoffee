@@ -1,6 +1,4 @@
-#include <cstring>
-#include <unistd.h>
-#include <fcntl.h>
+#include <QFile>
 
 #include "face_recognition.h"
 
@@ -69,9 +67,10 @@ void FaceRecognition::save_face()
         return;
     }
 
-    int fd = open("origin.feature", O_WRONLY | O_CREAT);
-    write(fd, &feature, sizeof(rockx_face_feature_t));
-    close(fd);
+    QFile file("origin.feature");
+    file.open(QIODevice::WriteOnly);
+    file.write((const char *) (&feature), sizeof(rockx_face_feature_t));
+    file.close();
 
     qInfo() << "Save feature to origin.feature.";
 
@@ -92,9 +91,10 @@ void FaceRecognition::check_face()
     rockx_face_feature_t origin_feature;
     memset(&origin_feature, 0, sizeof(rockx_face_feature_t));
 
-    int fd = open("origin.feature", O_RDONLY);
-    read(fd, &origin_feature, sizeof(rockx_face_feature_t));
-    close(fd);
+    QFile file("origin.feature");
+    file.open(QIODevice::ReadOnly);
+    file.read((char *) (&feature), sizeof(rockx_face_feature_t));
+    file.close();
 
     if (rockx_face.is_face_same(feature, origin_feature))
     {
