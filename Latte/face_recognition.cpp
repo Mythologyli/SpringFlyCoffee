@@ -93,7 +93,7 @@ void FaceRecognition::check_face()
 
     QFile file("origin.feature");
     file.open(QIODevice::ReadOnly);
-    file.read((char *) (&feature), sizeof(rockx_face_feature_t));
+    file.read((char *) (&origin_feature), sizeof(rockx_face_feature_t));
     file.close();
 
     if (rockx_face.is_face_same(feature, origin_feature))
