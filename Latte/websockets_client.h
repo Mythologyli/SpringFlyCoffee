@@ -20,12 +20,6 @@ private slots:
 
     void reconnect();
 
-    void on_connected();
-
-    void on_disconnected();
-
-    void on_error(QAbstractSocket::SocketError error);
-
     void on_text_message_received(const QString &message);
 
 private:

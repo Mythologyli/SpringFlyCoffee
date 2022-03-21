@@ -108,13 +108,27 @@ void RockxFace::set_similarity_threshold(float threshold)
     similarity_threshold = threshold;
 }
 
-bool RockxFace::is_face_same(rockx_face_feature_t &feature1, rockx_face_feature_t &feature2) const
+float RockxFace::compare(rockx_face_feature_t &feature1, rockx_face_feature_t &feature2)
 {
     float similarity;
     rockx_face_feature_similarity(&feature1, &feature2, &similarity);
-    qInfo() << "Similarity (more smaller more similar):" << similarity;
 
-    return similarity <= similarity_threshold;
+    qInfo() << "Similarity:" << similarity;
+
+    return similarity;
+}
+
+bool RockxFace::is_face_same(rockx_face_feature_t &feature1, rockx_face_feature_t &feature2) const
+{
+    return compare(feature1, feature2) <= similarity_threshold;
+}
+
+void RockxFace::cv_mat_to_rockx_image(cv::Mat &frame, rockx_image_t &image)
+{
+    image.pixel_format = ROCKX_PIXEL_FORMAT_BGR888;
+    image.width = frame.cols;
+    image.height = frame.rows;
+    image.data = frame.data;
 }
 
 RockxFace::~RockxFace()

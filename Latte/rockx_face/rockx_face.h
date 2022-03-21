@@ -1,6 +1,7 @@
 #ifndef LATTE_ROCKX_FACE_H
 #define LATTE_ROCKX_FACE_H
 
+#include <opencv2/opencv.hpp>
 #include <rockx.h>
 
 class RockxFace
@@ -16,11 +17,15 @@ public:
 
     bool recognize(rockx_image_t &input_image, rockx_face_feature_t &feature);
 
+    static float compare(rockx_face_feature_t &feature1, rockx_face_feature_t &feature2);
+
     bool is_face_same(rockx_face_feature_t &feature1, rockx_face_feature_t &feature2) const;
 
     float get_similarity_threshold() const;
 
     void set_similarity_threshold(float threshold);
+
+    static void cv_mat_to_rockx_image(cv::Mat &frame, rockx_image_t &image);
 
 private:
     rockx_handle_t face_detection_handle;

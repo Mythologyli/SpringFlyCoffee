@@ -1,28 +1,15 @@
 #include <QFile>
+#include <QDir>
 
 #include "face_recognition.h"
 
-FaceRecognition::FaceRecognition(QObject *parent) :
-        QObject(parent),
-        camera("/dev/v4l/by-id/usb-Generic_HD_camera-video-index0")
+FaceRecognition::FaceRecognition(QObject *parent) : QObject(parent)
 {
     rockx_face.set_similarity_threshold(0.5);
 }
 
-bool FaceRecognition::get_feature(rockx_face_feature_t &feature)
+bool FaceRecognition::get_feature(rockx_image_t &input_image, rockx_face_feature_t &feature)
 {
-    cv::Mat frame;
-    if (!camera.get_frame(frame))
-    {
-        return false;
-    }
-
-    rockx_image_t input_image;
-    input_image.pixel_format = ROCKX_PIXEL_FORMAT_BGR888;
-    input_image.width = frame.cols;
-    input_image.height = frame.rows;
-    input_image.data = frame.data;
-
     rockx_object_array_t face_array;
     memset(&face_array, 0, sizeof(rockx_object_array_t));
 
@@ -57,33 +44,35 @@ bool FaceRecognition::get_feature(rockx_face_feature_t &feature)
     return true;
 }
 
-void FaceRecognition::save_face()
+void FaceRecognition::save_face(rockx_image_t &input_image, const QString &name)
 {
     rockx_face_feature_t feature;
     memset(&feature, 0, sizeof(rockx_face_feature_t));
 
-    if (!get_feature(feature))
+    if (!get_feature(input_image, feature))
     {
         emit finished();
         return;
     }
 
-    QFile file("origin.feature");
+    QDir dir;
+    dir.mkdir("faces");
+    QFile file("faces/" + name + ".feature");
     file.open(QIODevice::WriteOnly);
     file.write((const char *) (&feature), sizeof(rockx_face_feature_t));
     file.close();
 
-    qInfo() << "Save feature to origin.feature.";
+    qInfo() << "Save feature to faces/" + name + ".feature";
 
     emit finished();
 }
 
-void FaceRecognition::check_face()
+void FaceRecognition::check_face(rockx_image_t &input_image, QString &name)
 {
     rockx_face_feature_t feature;
     memset(&feature, 0, sizeof(rockx_face_feature_t));
 
-    if (!get_feature(feature))
+    if (!get_feature(input_image, feature))
     {
         emit finished();
         return;
@@ -92,18 +81,38 @@ void FaceRecognition::check_face()
     rockx_face_feature_t origin_feature;
     memset(&origin_feature, 0, sizeof(rockx_face_feature_t));
 
-    QFile file("origin.feature");
-    file.open(QIODevice::ReadOnly);
-    file.read((char *) (&origin_feature), sizeof(rockx_face_feature_t));
-    file.close();
+    QDir dir("faces");
+    QStringList name_filters;
+    name_filters << "*.feature";
+    QStringList filename_list = dir.entryList(name_filters, QDir::Files | QDir::Readable);
 
-    if (rockx_face.is_face_same(feature, origin_feature))
+    int min_i = 0;
+    float min_similarity = 100.0;
+    for (int i = 0; i < filename_list.count(); i++)
     {
-        qInfo() << "Face is same as origin face.";
+        QFile file("faces/" + filename_list[i]);
+        file.open(QIODevice::ReadOnly);
+        file.read((char *) (&origin_feature), sizeof(rockx_face_feature_t));
+
+        float similarity = RockxFace::compare(feature, origin_feature);
+        if (similarity < min_similarity)
+        {
+            min_similarity = similarity;
+            min_i = i;
+        }
+
+        file.close();
+    }
+
+    if (min_similarity <= rockx_face.get_similarity_threshold())
+    {
+        name = filename_list[min_i].split(".")[0];
+        qInfo() << "Face is same as" << name;
     }
     else
     {
-        qInfo() << "Face is not same as origin face.";
+        name = "";
+        qInfo() << "Face is not same as any face.";
     }
 
     emit finished();

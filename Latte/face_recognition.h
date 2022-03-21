@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QtCore>
 
-#include "camera/camera.h"
 #include "rockx_face/rockx_face.h"
 
 class FaceRecognition : public QObject
@@ -15,14 +14,13 @@ public:
 
 public slots:
 
-    void save_face();
+    void save_face(rockx_image_t &input_image, const QString &name);
 
-    void check_face();
+    void check_face(rockx_image_t &input_image, QString &name);
 
 private:
-    bool get_feature(rockx_face_feature_t &feature);
+    bool get_feature(rockx_image_t &input_image, rockx_face_feature_t &feature);
 
-    Camera camera;
     RockxFace rockx_face;
 
 signals:
