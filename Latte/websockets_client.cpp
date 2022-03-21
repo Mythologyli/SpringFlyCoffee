@@ -5,15 +5,15 @@ WebSocketsClient::WebSocketsClient(const QString &url, QObject *parent) :
         QObject(parent)
 {
     qInfo() << "WebSocket server:" << url;
-    connect(&websocket, &QWebSocket::connected, this, &WebSocketsClient::on_connected);
-    connect(&websocket, &QWebSocket::disconnected, this, &WebSocketsClient::on_disconnected);
+    connect(&websocket, SIGNAL(connected()), this, SLOT(on_connected()));
+    connect(&websocket, SIGNAL(disconnected()), this, SLOT(on_disconnected()));
     websocket.open(url);
 }
 
 void WebSocketsClient::on_connected()
 {
     qInfo() << "WebSocket connected.";
-    connect(&websocket, &QWebSocket::textMessageReceived, this, &WebSocketsClient::on_text_message_received);
+    connect(&websocket, SIGNAL(textMessageReceived(QString)), this, SLOT(on_text_message_received(QString)));
 }
 
 void WebSocketsClient::on_disconnected()
@@ -44,6 +44,6 @@ void WebSocketsClient::send()
 
 void WebSocketsClient::close()
 {
-    disconnect(&websocket, &QWebSocket::disconnected, this, &WebSocketsClient::on_disconnected);
+    disconnect(&websocket, SIGNAL(disconnected()), this, SLOT(on_disconnected()));
     websocket.close();
 }
