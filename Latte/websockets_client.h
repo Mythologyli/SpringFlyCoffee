@@ -14,15 +14,20 @@ public:
 
 public slots:
 
+    void send();
+
     void close();
 
 private slots:
 
     void on_connected();
 
+    void on_disconnected();
+
     void on_text_message_received(const QString &message);
 
 private:
+    QString url;
     QWebSocket websocket;
 
 signals:

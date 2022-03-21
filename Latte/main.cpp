@@ -44,5 +44,9 @@ int main(int argc, char **argv)
     QObject::connect(&face_recognition, SIGNAL(finished()), &client, SLOT(close()));
     QObject::connect(&face_recognition, SIGNAL(finished()), &app, SLOT(quit()));
 
+    QTimer timer(&app);
+    QObject::connect(&timer, SIGNAL(timeout()), &client, SLOT(send()));
+    timer.start(1000);
+
     return QCoreApplication::exec();
 }
