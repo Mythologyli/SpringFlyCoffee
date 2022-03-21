@@ -20,6 +20,7 @@ include_directories(${RockX_INCLUDE_DIRS})
 set(SOURCES
         main.cpp
         face_recognition.cpp
+        websockets_client.cpp
         camera/camera.cpp
         rockx_face/rockx_face.cpp
         )

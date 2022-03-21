@@ -2,8 +2,9 @@
 
 #include "face_recognition.h"
 
-FaceRecognition::FaceRecognition(QObject *parent) : QObject(parent),
-                                                    camera("/dev/v4l/by-id/usb-Generic_HD_camera-video-index0")
+FaceRecognition::FaceRecognition(QObject *parent) :
+        QObject(parent),
+        camera("/dev/v4l/by-id/usb-Generic_HD_camera-video-index0")
 {
     rockx_face.set_similarity_threshold(0.5);
 }

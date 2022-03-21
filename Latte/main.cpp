@@ -2,6 +2,7 @@
 #include <QtCore>
 
 #include "face_recognition.h"
+#include "websockets_client.h"
 
 int main(int argc, char **argv)
 {
@@ -34,17 +35,14 @@ int main(int argc, char **argv)
 
     parser.process(app);
 
-    auto *face_recognition = new FaceRecognition(&app);
-    QObject::connect(face_recognition, SIGNAL(finished()), &app, SLOT(quit()));
+    FaceRecognition face_recognition(&app);
+    WebSocketsClient client("ws://10.112.193.132:9876", &app);
 
-    if (parser.isSet("save"))
-    {
-        QTimer::singleShot(0, face_recognition, SLOT(save_face()));
-    }
-    else
-    {
-        QTimer::singleShot(0, face_recognition, SLOT(check_face()));
-    }
+    QObject::connect(&client, SIGNAL(command_check_received()), &face_recognition, SLOT(check_face()));
+    QObject::connect(&client, SIGNAL(command_save_received()), &face_recognition, SLOT(save_face()));
+
+    QObject::connect(&face_recognition, SIGNAL(finished()), &client, SLOT(close()));
+    QObject::connect(&face_recognition, SIGNAL(finished()), &app, SLOT(quit()));
 
     return QCoreApplication::exec();
 }
