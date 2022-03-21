@@ -1,5 +1,3 @@
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "NotImplementedFunctions"
 #ifndef LATTE_WEBSOCKETS_CLIENT_H
 #define LATTE_WEBSOCKETS_CLIENT_H
 
@@ -14,15 +12,19 @@ public:
 
 public slots:
 
-    void send();
+    void send(const QString &text);
 
     void close();
 
 private slots:
 
+    void reconnect();
+
     void on_connected();
 
     void on_disconnected();
+
+    void on_error(QAbstractSocket::SocketError error);
 
     void on_text_message_received(const QString &message);
 
