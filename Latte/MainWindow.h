@@ -1,5 +1,5 @@
-#ifndef MOCCA_MAIN_WINDOW_H
-#define MOCCA_MAIN_WINDOW_H
+#ifndef LATTE_MAINWINDOW_H
+#define LATTE_MAINWINDOW_H
 
 #include <QWidget>
 
@@ -40,4 +40,4 @@ private:
     Mode mode;
 };
 
-#endif //MOCCA_MAIN_WINDOW_H
+#endif //LATTE_MAINWINDOW_H

@@ -10,11 +10,11 @@ public:
 
     ~Camera();
 
-    bool get_frame(cv::Mat &frame);
+    bool getFrame(cv::Mat &frame);
 
 private:
-    bool is_opened;
-    cv::VideoCapture video_capture;
+    bool isOpened;
+    cv::VideoCapture videoCapture;
 };
 
 #endif //LATTE_CAMERA_H
