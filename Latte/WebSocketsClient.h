@@ -1,5 +1,5 @@
-#ifndef LATTE_WEBSOCKETS_CLIENT_H
-#define LATTE_WEBSOCKETS_CLIENT_H
+#ifndef LATTE_WEBSOCKETSCLIENT_H
+#define LATTE_WEBSOCKETSCLIENT_H
 
 #include <QObject>
 #include <QWebSocket>
@@ -20,17 +20,17 @@ private slots:
 
     void reconnect();
 
-    void on_text_message_received(const QString &message);
+    void onTextMessageReceived(const QString &message);
 
 private:
     QString url;
-    QWebSocket websocket;
+    QWebSocket webSocket;
 
 signals:
 
-    void command_check_received();
+    void commandCheckReceived();
 
-    void command_save_received();
+    void commandSaveReceived();
 };
 
-#endif // LATTE_WEBSOCKETS_CLIENT_H
+#endif // LATTE_WEBSOCKETSCLIENT_H
