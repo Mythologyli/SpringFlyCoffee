@@ -7,7 +7,7 @@ Camera::Camera(const char *device_path)
     video_capture = cv::VideoCapture(device_path);
     if (!video_capture.isOpened())
     {
-        qWarning() << "Cannot open camera. Remember to run this program as root user.";
+        qWarning() << "Cannot open camera.";
         is_opened = false;
     }
     else
