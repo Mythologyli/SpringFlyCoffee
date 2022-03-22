@@ -51,7 +51,7 @@ void FaceRecognition::save_face(rockx_image_t &input_image, const QString &name)
 
     if (!get_feature(input_image, feature))
     {
-        emit finished();
+        emit save_face_fail();
         return;
     }
 
@@ -64,7 +64,7 @@ void FaceRecognition::save_face(rockx_image_t &input_image, const QString &name)
 
     qInfo() << "Save feature to faces/" + name + ".feature";
 
-    emit finished();
+    emit save_face_succeed();
 }
 
 void FaceRecognition::check_face(rockx_image_t &input_image, QString &name)
@@ -74,7 +74,7 @@ void FaceRecognition::check_face(rockx_image_t &input_image, QString &name)
 
     if (!get_feature(input_image, feature))
     {
-        emit finished();
+        emit check_face_fail();
         return;
     }
 
@@ -108,12 +108,14 @@ void FaceRecognition::check_face(rockx_image_t &input_image, QString &name)
     {
         name = filename_list[min_i].split(".")[0];
         qInfo() << "Face is same as" << name;
+
+        emit check_face_match();
     }
     else
     {
         name = "";
         qInfo() << "Face is not same as any face.";
-    }
 
-    emit finished();
+        emit check_face_no_match();
+    }
 }

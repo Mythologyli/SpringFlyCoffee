@@ -25,7 +25,15 @@ private:
 
 signals:
 
-    void finished();
+    void save_face_succeed();
+
+    void save_face_fail();
+
+    void check_face_match();
+
+    void check_face_no_match();
+
+    void check_face_fail();
 };
 
 #endif //LATTE_FACE_RECOGNITION_H
