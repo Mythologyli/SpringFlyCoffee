@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QtCore>
 
-#include "RockxFace/RockxFace.h"
+#include "../RockxFace/RockxFace.h"
 
 class FaceRecognition : public QObject
 {
