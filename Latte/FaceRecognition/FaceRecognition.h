@@ -27,6 +27,8 @@ private:
 
 signals:
 
+    void faceBoxGetted(int left, int bottom, int right, int top);
+
     void saveFaceSucceed();
 
     void saveFaceFail();

@@ -1,3 +1,5 @@
+#include <QPainter>
+
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
@@ -13,14 +15,22 @@ MainWindow::MainWindow(QWidget *parent) :
 
     mode = Mode::Check;
 
+    boxLeft = -10;
+    boxBottom = -10;
+    boxRight = -10;
+    boxTop = -10;
+
     camera = new Camera("/dev/v4l/by-id/usb-Generic_HD_camera-video-index0");
     faceRecognition = new FaceRecognition(parent);
     timer = new QTimer(this);
 
     connect(faceRecognition, &FaceRecognition::saveFaceSucceed, this, &QWidget::close);
     connect(faceRecognition, &FaceRecognition::saveFaceSucceed, timer, &QTimer::stop);
+
     connect(faceRecognition, &FaceRecognition::checkFaceMatch, this, &QWidget::close);
     connect(faceRecognition, &FaceRecognition::checkFaceMatch, timer, &QTimer::stop);
+
+    connect(faceRecognition, &FaceRecognition::faceBoxGetted, this, &MainWindow::drawRectangle);
 
     connect(timer, &QTimer::timeout,
             [&]()
@@ -28,6 +38,17 @@ MainWindow::MainWindow(QWidget *parent) :
                 cv::Mat frame;
                 cv::Mat convertedFrame;
                 camera->getFrame(frame);
+                cv::rectangle(frame,
+                              cv::Point(boxLeft, boxBottom),
+                              cv::Point(boxRight, boxTop),
+                              cv::Scalar(0, 255, 0),
+                              3);
+
+                boxLeft = -10;
+                boxBottom = -10;
+                boxRight = -10;
+                boxTop = -10;
+
                 cv::cvtColor(frame, convertedFrame, CV_BGR2RGB);
 
                 QImage image((uchar *) convertedFrame.data,
@@ -71,4 +92,12 @@ MainWindow::~MainWindow()
 void MainWindow::setMode(Mode recognize_mode)
 {
     mode = recognize_mode;
+}
+
+void MainWindow::drawRectangle(int left, int bottom, int right, int top)
+{
+    boxLeft = left;
+    boxBottom = bottom;
+    boxRight = right;
+    boxTop = top;
 }

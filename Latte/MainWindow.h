@@ -30,6 +30,10 @@ public:
 
     void setMode(Mode recognize_mode);
 
+private slots:
+
+    void drawRectangle(int left, int bottom, int right, int top);
+
 private:
     Ui::MainWindow *ui;
 
@@ -38,6 +42,8 @@ private:
     QTimer *timer;
 
     Mode mode;
+
+    int boxLeft, boxBottom, boxRight, boxTop;
 };
 
 #endif //LATTE_MAINWINDOW_H
