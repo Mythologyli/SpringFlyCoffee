@@ -1,4 +1,4 @@
-#include <QtCore>
+#include <QDebug>
 
 #include "Camera.h"
 

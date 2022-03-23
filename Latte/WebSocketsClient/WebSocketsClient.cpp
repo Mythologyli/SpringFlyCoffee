@@ -6,31 +6,38 @@ WebSocketsClient::WebSocketsClient(const QString &url, QObject *parent) :
 {
     qInfo() << "WebSocket server:" << url;
 
-    connect(&webSocket, &QWebSocket::connected,
+    webSocket = new QWebSocket();
+
+    connect(webSocket, &QWebSocket::connected,
             [&]()
             {
                 qInfo() << "WebSocket connected.";
             });
 
-    connect(&webSocket, &QWebSocket::disconnected,
+    connect(webSocket, &QWebSocket::disconnected,
             [&]()
             {
                 qWarning() << "WebSocket disconnected.";
             });
 
-    connect(&webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::error),
+    connect(webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::error),
             [&](QAbstractSocket::SocketError error)
             {
                 qWarning() << "WebSocket error:" << qt_getEnumName(error);
             });
 
-    connect(&webSocket, &QWebSocket::textMessageReceived,
+    connect(webSocket, &QWebSocket::textMessageReceived,
             this, &WebSocketsClient::onTextMessageReceived);
 
-    connect(&webSocket, &QWebSocket::disconnected,
+    connect(webSocket, &QWebSocket::disconnected,
             this, &WebSocketsClient::reconnect);
 
-    webSocket.open(url);
+    webSocket->open(url);
+}
+
+WebSocketsClient::~WebSocketsClient()
+{
+    delete webSocket;
 }
 
 void WebSocketsClient::onTextMessageReceived(const QString &message)
@@ -50,18 +57,18 @@ void WebSocketsClient::onTextMessageReceived(const QString &message)
 void WebSocketsClient::reconnect()
 {
     qInfo() << "WebSocket reconnecting...";
-    webSocket.abort();
-    webSocket.open(url);
+    webSocket->abort();
+    webSocket->open(url);
 }
 
 void WebSocketsClient::send(const QString &text)
 {
-    webSocket.sendTextMessage(text);
+    webSocket->sendTextMessage(text);
 }
 
 void WebSocketsClient::close()
 {
-    disconnect(&webSocket, &QWebSocket::disconnected,
+    disconnect(webSocket, &QWebSocket::disconnected,
                this, &WebSocketsClient::reconnect);
-    webSocket.close();
+    webSocket->close();
 }

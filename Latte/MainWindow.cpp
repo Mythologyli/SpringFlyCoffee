@@ -1,4 +1,6 @@
-#include <QPainter>
+#include <QTimer>
+#include <QDebug>
+#include <QDateTime>
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"

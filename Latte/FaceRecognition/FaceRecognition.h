@@ -2,7 +2,6 @@
 #define LATTE_FACERECOGNITION_H
 
 #include <QObject>
-#include <QtCore>
 
 #include "../RockxFace/RockxFace.h"
 

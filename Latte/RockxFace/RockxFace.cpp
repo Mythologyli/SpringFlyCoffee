@@ -1,6 +1,6 @@
 #include <ctime>
 
-#include <QtCore>
+#include <QDebug>
 
 #include "RockxFace.h"
 

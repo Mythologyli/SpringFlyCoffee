@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QCommandLineParser>
 
 #include "MainWindow.h"
 
