@@ -14,7 +14,7 @@ public:
 
 private:
     bool isOpened;
-    cv::VideoCapture videoCapture;
+    cv::VideoCapture *videoCapture;
 };
 
 #endif //LATTE_CAMERA_H
