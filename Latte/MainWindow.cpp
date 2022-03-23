@@ -5,7 +5,8 @@
 
 MainWindow::MainWindow(QWidget *parent) :
         QWidget(parent),
-        ui(new Ui::MainWindow)
+        ui(new Ui::MainWindow),
+        faceBox{-10, -10, -10, -10}
 {
     ui->setupUi(this);
 
@@ -14,11 +15,6 @@ MainWindow::MainWindow(QWidget *parent) :
     setStyleSheet("background-color: black;");
 
     mode = Mode::Check;
-
-    boxLeft = -10;
-    boxBottom = -10;
-    boxRight = -10;
-    boxTop = -10;
 
     camera = new Camera("/dev/v4l/by-id/usb-Generic_HD_camera-video-index0");
     faceRecognition = new FaceRecognition(parent);
@@ -30,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(faceRecognition, &FaceRecognition::checkFaceMatch, this, &QWidget::close);
     connect(faceRecognition, &FaceRecognition::checkFaceMatch, timer, &QTimer::stop);
 
-    connect(faceRecognition, &FaceRecognition::faceBoxGetted, this, &MainWindow::drawRectangle);
+    connect(faceRecognition, &FaceRecognition::faceBoxGetted, this, &MainWindow::setFaceBox);
 
     connect(timer, &QTimer::timeout,
             [&]()
@@ -39,15 +35,15 @@ MainWindow::MainWindow(QWidget *parent) :
                 cv::Mat convertedFrame;
                 camera->getFrame(frame);
                 cv::rectangle(frame,
-                              cv::Point(boxLeft, boxBottom),
-                              cv::Point(boxRight, boxTop),
+                              cv::Point(faceBox.left, faceBox.bottom),
+                              cv::Point(faceBox.right, faceBox.top),
                               cv::Scalar(0, 255, 0),
                               3);
 
-                boxLeft = -10;
-                boxBottom = -10;
-                boxRight = -10;
-                boxTop = -10;
+                faceBox.left = -10;
+                faceBox.bottom = -10;
+                faceBox.right = -10;
+                faceBox.top = -10;
 
                 cv::cvtColor(frame, convertedFrame, CV_BGR2RGB);
 
@@ -94,10 +90,10 @@ void MainWindow::setMode(Mode recognize_mode)
     mode = recognize_mode;
 }
 
-void MainWindow::drawRectangle(int left, int bottom, int right, int top)
+void MainWindow::setFaceBox(rockx_rect_t box)
 {
-    boxLeft = left;
-    boxBottom = bottom;
-    boxRight = right;
-    boxTop = top;
+    faceBox.left = box.left;
+    faceBox.bottom = box.bottom;
+    faceBox.right = box.right;
+    faceBox.top = box.top;
 }

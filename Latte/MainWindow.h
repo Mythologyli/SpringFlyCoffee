@@ -32,7 +32,7 @@ public:
 
 private slots:
 
-    void drawRectangle(int left, int bottom, int right, int top);
+    void setFaceBox(rockx_rect_t box);
 
 private:
     Ui::MainWindow *ui;
@@ -43,7 +43,7 @@ private:
 
     Mode mode;
 
-    int boxLeft, boxBottom, boxRight, boxTop;
+    rockx_rect_t faceBox;
 };
 
 #endif //LATTE_MAINWINDOW_H

@@ -36,10 +36,7 @@ bool FaceRecognition::getFeature(rockx_image_t &inputImage, rockx_face_feature_t
         qInfo() << "Score:" << faceArray.object[i].score;
     }
 
-    emit faceBoxGetted(faceArray.object[0].box.left,
-                       faceArray.object[0].box.bottom,
-                       faceArray.object[0].box.right,
-                       faceArray.object[0].box.top);
+    emit faceBoxGetted(faceArray.object[0].box);
 
     rockx_image_t outputImage;
     memset(&outputImage, 0, sizeof(rockx_image_t));

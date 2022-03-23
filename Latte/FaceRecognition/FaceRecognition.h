@@ -27,7 +27,7 @@ private:
 
 signals:
 
-    void faceBoxGetted(int left, int bottom, int right, int top);
+    void faceBoxGetted(rockx_rect_t box);
 
     void saveFaceSucceed();
 
