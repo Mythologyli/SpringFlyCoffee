@@ -17,6 +17,25 @@ void setup()
 
 void loop()
 {
-    Serial.println("hello, latte!");
-    delay(100);
+    switch (Serial.read())
+    {
+    case '1':
+        pump1.start();
+        break;
+
+    case '2':
+        pump2.start();
+        break;
+
+    case '3':
+        pump1.stop();
+        break;
+
+    case '4':
+        pump2.stop();
+        break;
+
+    default:
+        break;
+    }
 }
