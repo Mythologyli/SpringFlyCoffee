@@ -4,8 +4,8 @@
 
 #define SERIAL_BAUD 115200
 
-Pump pump1(2, 3, 4);
-Pump pump2(5, 6, 7);
+Pump pump1(2, 0);
+Pump pump2(4, 5);
 
 void setup()
 {
