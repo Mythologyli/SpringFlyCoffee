@@ -2,8 +2,8 @@
 #include <QDebug>
 #include <QDateTime>
 
-#include "MainWindow.h"
-#include "ui_MainWindow.h"
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
         QWidget(parent),
@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mode = Mode::Check;
 
     camera = new Camera("/dev/v4l/by-id/usb-Generic_HD_camera-video-index0");
-    faceRecognition = new FaceRecognition(parent);
+    faceRecognition = new FaceRecognition(this);
     timer = new QTimer(this);
 
     connect(faceRecognition, &FaceRecognition::saveFaceSucceed, this, &QWidget::close);
@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(faceRecognition, &FaceRecognition::checkFaceMatch, this, &QWidget::close);
     connect(faceRecognition, &FaceRecognition::checkFaceMatch, timer, &QTimer::stop);
 
-    connect(faceRecognition, &FaceRecognition::faceBoxGetted, this, &MainWindow::setFaceBox);
+    connect(faceRecognition, &FaceRecognition::faceBoxGet, this, &MainWindow::setFaceBox);
 
     connect(timer, &QTimer::timeout,
             [&]()
@@ -81,8 +81,6 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete camera;
-    delete faceRecognition;
-    delete timer;
 
     delete ui;
 }

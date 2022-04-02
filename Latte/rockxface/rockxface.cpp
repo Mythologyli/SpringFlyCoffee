@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-#include "RockxFace.h"
+#include "rockxface.h"
 
 RockxFace::RockxFace()
 {

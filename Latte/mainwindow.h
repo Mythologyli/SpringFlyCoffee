@@ -3,8 +3,8 @@
 
 #include <QWidget>
 
-#include "Camera/Camera.h"
-#include "FaceRecognition/FaceRecognition.h"
+#include "camera/camera.h"
+#include "facerecognition/facerecognition.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui

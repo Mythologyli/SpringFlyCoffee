@@ -1,6 +1,6 @@
 #include <QDebug>
 
-#include "Camera.h"
+#include "camera.h"
 
 Camera::Camera(const char *device_path)
 {

@@ -2,7 +2,7 @@
 #include <QFile>
 #include <QDir>
 
-#include "FaceRecognition.h"
+#include "facerecognition.h"
 
 FaceRecognition::FaceRecognition(QObject *parent) : QObject(parent)
 {
@@ -37,7 +37,7 @@ bool FaceRecognition::getFeature(rockx_image_t &inputImage, rockx_face_feature_t
         qInfo() << "Score:" << faceArray.object[i].score;
     }
 
-    emit faceBoxGetted(faceArray.object[0].box);
+    emit faceBoxGet(faceArray.object[0].box);
 
     rockx_image_t outputImage;
     memset(&outputImage, 0, sizeof(rockx_image_t));

@@ -23,11 +23,11 @@ include_directories(${RockX_INCLUDE_DIRS})
 
 set(SOURCES
         main.cpp
-        MainWindow.cpp
-        FaceRecognition/FaceRecognition.cpp
-        WebSocketsClient/WebSocketsClient.cpp
-        Camera/Camera.cpp
-        RockxFace/RockxFace.cpp
+        mainwindow.cpp
+        facerecognition/facerecognition.cpp
+        websocketsclient/websocketsclient.cpp
+        camera/camera.cpp
+        rockxface/rockxface.cpp
         )
 
 add_executable(Latte ${SOURCES})

@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include "../RockxFace/RockxFace.h"
+#include "../rockxface/rockxface.h"
 
 class FaceRecognition : public QObject
 {
@@ -26,7 +26,7 @@ private:
 
 signals:
 
-    void faceBoxGetted(rockx_rect_t box);
+    void faceBoxGet(rockx_rect_t box);
 
     void saveFaceSucceed();
 

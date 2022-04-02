@@ -1,4 +1,4 @@
-#include "WebSocketsClient.h"
+#include "websocketsclient.h"
 
 WebSocketsClient::WebSocketsClient(const QString &url, QObject *parent) :
         url(url),
@@ -7,6 +7,7 @@ WebSocketsClient::WebSocketsClient(const QString &url, QObject *parent) :
     qInfo() << "WebSocket server:" << url;
 
     webSocket = new QWebSocket();
+    webSocket->setParent(this);
 
     connect(webSocket, &QWebSocket::connected,
             [&]()
@@ -33,11 +34,6 @@ WebSocketsClient::WebSocketsClient(const QString &url, QObject *parent) :
             this, &WebSocketsClient::reconnect);
 
     webSocket->open(url);
-}
-
-WebSocketsClient::~WebSocketsClient()
-{
-    delete webSocket;
 }
 
 void WebSocketsClient::onTextMessageReceived(const QString &message)

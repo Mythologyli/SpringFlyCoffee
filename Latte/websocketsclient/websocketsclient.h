@@ -10,8 +10,6 @@ Q_OBJECT
 public:
     explicit WebSocketsClient(const QString &url, QObject *parent = nullptr);
 
-    ~WebSocketsClient() override;
-
 public slots:
 
     void send(const QString &text);
