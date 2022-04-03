@@ -1,41 +1,33 @@
 #include <Arduino.h>
 
 #include "pump.h"
+#include "hcsr04.h"
 
 #define SERIAL_BAUD 115200
 
-Pump pump1(2, 0);
+Pump pump1(2, 3);
 Pump pump2(4, 5);
+HcSr04 hcsr04(6, 7);
+
+float distance = 0.0;
 
 void setup()
 {
     pump1.init();
     pump2.init();
 
+    hcsr04.init();
+
     Serial.begin(SERIAL_BAUD);
 }
 
 void loop()
 {
-    switch (Serial.read())
+    float currentDistance = hcsr04.getDistance();
+    if (distance != currentDistance)
     {
-    case '1':
-        pump1.start();
-        break;
-
-    case '2':
-        pump2.start();
-        break;
-
-    case '3':
-        pump1.stop();
-        break;
-
-    case '4':
-        pump2.stop();
-        break;
-
-    default:
-        break;
+        distance = currentDistance;
+        Serial.print("Distance: ");
+        Serial.println(distance);
     }
 }

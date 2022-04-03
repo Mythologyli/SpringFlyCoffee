@@ -1,27 +1,27 @@
 #include "pump.h"
 
-Pump::Pump(uint8_t pin_in1, uint8_t pin_in2)
+Pump::Pump(uint8_t in1Pin, uint8_t in2Pin)
 {
-    this->pin_in1 = pin_in1;
-    this->pin_in2 = pin_in2;
+    this->in1Pin = in1Pin;
+    this->in2Pin = in2Pin;
 }
 
 void Pump::init()
 {
-    pinMode(pin_in1, OUTPUT);
-    pinMode(pin_in2, OUTPUT);
+    pinMode(in1Pin, OUTPUT);
+    pinMode(in2Pin, OUTPUT);
 
     stop();
 }
 
 void Pump::start()
 {
-    digitalWrite(pin_in1, HIGH);
-    digitalWrite(pin_in2, LOW);
+    digitalWrite(in1Pin, HIGH);
+    digitalWrite(in2Pin, LOW);
 }
 
 void Pump::stop()
 {   
-    digitalWrite(pin_in1, HIGH);
-    digitalWrite(pin_in2, HIGH);
+    digitalWrite(in1Pin, HIGH);
+    digitalWrite(in2Pin, HIGH);
 }

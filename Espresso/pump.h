@@ -6,7 +6,7 @@
 class Pump
 {
 public:
-    explicit Pump(uint8_t pin_in1, uint8_t pin_in2);
+    explicit Pump(uint8_t in1Pin, uint8_t in2Pin);
 
     void init();
 
@@ -15,8 +15,8 @@ public:
     void stop();
 
 private:
-    uint8_t pin_in1;
-    uint8_t pin_in2;
+    uint8_t in1Pin;
+    uint8_t in2Pin;
 };
 
 #endif // ESPRESSO_PUMP_H
