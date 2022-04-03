@@ -24,7 +24,14 @@ void loop()
     char ch = Serial.read();
     Pump *pump = nullptr;
 
-    if (ch == '1')
+    if (ch == '0')
+    {
+        pump1.stop();
+        pump2.stop();
+
+        Serial.println('0');
+    }
+    else if (ch == '1')
     {
         pump = &pump1;
     }
