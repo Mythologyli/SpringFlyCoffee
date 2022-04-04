@@ -23,8 +23,10 @@ include_directories(${RockX_INCLUDE_DIRS})
 
 set(SOURCES
         main.cpp
-        mainwindow.cpp
+        facewindow/facewindow.cpp
+        pumpwindow/pumpwindow.cpp
         facerecognition/facerecognition.cpp
+        pump/pump.cpp
         websocketsclient/websocketsclient.cpp
         camera/camera.cpp
         rockxface/rockxface.cpp

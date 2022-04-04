@@ -8,7 +8,7 @@ FaceRecognition::FaceRecognition(QObject *parent) : QObject(parent)
 {
     rockxFace = new RockxFace();
 
-    rockxFace->setSimilarityThreshold(0.3);
+    rockxFace->setSimilarityThreshold(0.4);
 }
 
 FaceRecognition::~FaceRecognition()
@@ -61,7 +61,7 @@ void FaceRecognition::saveFace(rockx_image_t &inputImage, const QString &name)
 
     if (!getFeature(inputImage, feature))
     {
-        emit saveFaceFail();
+        emit noFaceFound();
         return;
     }
 
@@ -74,7 +74,7 @@ void FaceRecognition::saveFace(rockx_image_t &inputImage, const QString &name)
 
     qInfo() << "Save feature to faces/" + name + ".feature";
 
-    emit saveFaceSucceed();
+    emit faceSaved();
 }
 
 void FaceRecognition::checkFace(rockx_image_t &inputImage, QString &name)
@@ -84,7 +84,7 @@ void FaceRecognition::checkFace(rockx_image_t &inputImage, QString &name)
 
     if (!getFeature(inputImage, feature))
     {
-        emit checkFaceFail();
+        emit noFaceFound();
         return;
     }
 
@@ -119,13 +119,13 @@ void FaceRecognition::checkFace(rockx_image_t &inputImage, QString &name)
         name = nameList[minIndex].split(".")[0];
         qInfo() << "Face is same as" << name;
 
-        emit checkFaceMatch();
+        emit faceMatched();
     }
     else
     {
         name = "";
         qInfo() << "Face is not same as any face.";
 
-        emit checkFaceNoMatch();
+        emit faceNoMatched();
     }
 }

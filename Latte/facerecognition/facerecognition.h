@@ -19,24 +19,24 @@ public slots:
 
     void checkFace(rockx_image_t &inputImage, QString &name);
 
-private:
+private slots:
+
     bool getFeature(rockx_image_t &inputImage, rockx_face_feature_t &feature);
 
+private:
     RockxFace *rockxFace;
 
 signals:
 
     void faceBoxGet(rockx_rect_t box);
 
-    void saveFaceSucceed();
+    void noFaceFound();
 
-    void saveFaceFail();
+    void faceSaved();
 
-    void checkFaceMatch();
+    void faceMatched();
 
-    void checkFaceNoMatch();
-
-    void checkFaceFail();
+    void faceNoMatched();
 };
 
 #endif //LATTE_FACERECOGNITION_H

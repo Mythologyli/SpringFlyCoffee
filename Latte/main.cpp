@@ -1,7 +1,7 @@
 #include <QApplication>
 #include <QCommandLineParser>
 
-#include "mainwindow.h"
+#include "facewindow/facewindow.h"
 
 int main(int argc, char **argv)
 {
@@ -34,17 +34,17 @@ int main(int argc, char **argv)
 
     parser.process(app);
 
-    MainWindow window;
+    FaceWindow faceWindow;
     if (parser.isSet("save"))
     {
-        window.setMode(MainWindow::Mode::Save);
+        faceWindow.setMode(FaceWindow::Mode::Save);
     }
     else
     {
-        window.setMode(MainWindow::Mode::Check);
+        faceWindow.setMode(FaceWindow::Mode::Check);
     }
 
-    window.showFullScreen();
+    faceWindow.showFullScreen();
 
     return QApplication::exec();
 }
