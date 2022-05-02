@@ -12,6 +12,7 @@ find_package(Qt5 COMPONENTS
         Gui
         Widgets
         SerialPort
+        Network
         WebSockets
         REQUIRED)
 
@@ -30,6 +31,8 @@ set(SOURCES
         websocketsclient/websocketsclient.cpp
         camera/camera.cpp
         rockxface/rockxface.cpp
+        servicebot/servicebot.cpp
+        xp58/xp58.cpp
         )
 
 add_executable(Latte ${SOURCES})
@@ -38,6 +41,7 @@ target_link_libraries(Latte Qt5::Core)
 target_link_libraries(Latte Qt5::Gui)
 target_link_libraries(Latte Qt5::Widgets)
 target_link_libraries(Latte Qt5::SerialPort)
+target_link_libraries(Latte Qt5::Network)
 target_link_libraries(Latte Qt5::WebSockets)
 target_link_libraries(Latte ${OpenCV_LIBS})
 target_link_libraries(Latte ${RockX_LIBS})

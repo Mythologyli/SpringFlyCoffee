@@ -6,6 +6,8 @@
 #include "../pumpwindow/pumpwindow.h"
 #include "../camera/camera.h"
 #include "../facerecognition/facerecognition.h"
+#include "../servicebot/servicebot.h"
+#include "../xp58/xp58.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -42,6 +44,8 @@ private:
 
     Camera *camera;
     FaceRecognition *faceRecognition;
+    ServiceBot *serviceBot;
+    Xp58 *xp58;
 
     QTimer *cameraTimer;
     QTimer *faceRecognitionTimer;

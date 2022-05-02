@@ -119,7 +119,7 @@ void FaceRecognition::checkFace(rockx_image_t &inputImage, QString &name)
         name = nameList[minIndex].split(".")[0];
         qInfo() << "Face is same as" << name;
 
-        emit faceMatched();
+        emit faceMatched(name);
     }
     else
     {

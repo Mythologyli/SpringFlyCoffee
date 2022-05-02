@@ -34,7 +34,7 @@ signals:
 
     void faceSaved();
 
-    void faceMatched();
+    void faceMatched(const QString& name);
 
     void faceNoMatched();
 };

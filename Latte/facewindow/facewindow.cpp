@@ -21,6 +21,8 @@ FaceWindow::FaceWindow(QWidget *parent) :
 
     camera = new Camera("/dev/v4l/by-id/usb-Generic_HD_camera-video-index0");
     faceRecognition = new FaceRecognition(this);
+    serviceBot = new ServiceBot(this);
+    xp58 = new Xp58();
 
     cameraTimer = new QTimer(this);
     faceRecognitionTimer = new QTimer(this);
@@ -29,13 +31,33 @@ FaceWindow::FaceWindow(QWidget *parent) :
     connect(faceRecognition, &FaceRecognition::faceSaved, this, &QWidget::close);
     connect(faceRecognition, &FaceRecognition::faceSaved, faceRecognitionTimer, &QTimer::stop);
 
-    connect(faceRecognition, &FaceRecognition::faceMatched, [&]()
+    connect(faceRecognition, &FaceRecognition::faceMatched, [&](const QString& name)
     {
         faceRecognitionTimer->stop();
         ui->imageLabel->clear();
 
         pumpWindow->showFullScreen();
-        pumpWindow->startPump(1);
+
+        if (name == "20220421012808")
+        {
+            serviceBot->sendMessage("2680196372", "你于 " + QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss") + " 使用了咖啡机！\n欢迎再次使用！");
+            xp58->printLine("你于 " + QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss") + " 使用了咖啡机！");
+            xp58->feedNLines(5);
+            xp58->printLine("欢迎再次使用!");
+            xp58->feedNLines(10);
+
+            pumpWindow->startPump(1);
+        }
+        else
+        {
+            serviceBot->sendMessage("838997750", "你于 " + QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss") + " 使用了咖啡机！\n欢迎再次使用！");
+            xp58->printLine("你于 " + QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss") + " 使用了咖啡机！");
+            xp58->feedNLines(5);
+            xp58->printLine("欢迎再次使用!");
+            xp58->feedNLines(10);
+
+            pumpWindow->startPump(2);
+        }
     });
 
     connect(pumpWindow, &PumpWindow::pumpFinished, [&]()
@@ -88,7 +110,7 @@ FaceWindow::FaceWindow(QWidget *parent) :
                 else
                 {
                     QDateTime date = QDateTime::currentDateTime();
-                    QString timeStr = date.toString("yyyyddMMhhmmss");
+                    QString timeStr = date.toString("yyyyMMddhhmmss");
 
                     faceRecognition->saveFace(inputImage, timeStr);
                 }
@@ -101,6 +123,7 @@ FaceWindow::FaceWindow(QWidget *parent) :
 FaceWindow::~FaceWindow()
 {
     delete camera;
+    delete xp58;
 
     delete ui;
 }

@@ -54,10 +54,11 @@ void PumpWindow::startPump(int pumpNumber)
     ui->button->setEnabled(true);
     ui->label->setText("点击下方按钮开始");
 
+    disconnect(ui->button, &QPushButton::clicked, nullptr, nullptr);
+
     if (pumpNumber == 1)
     {
         connect(ui->button, &QPushButton::clicked, pump, &Pump::startPump1);
-
     }
     else if (pumpNumber == 2)
     {
